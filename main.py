@@ -5,6 +5,8 @@
 # update
 # draw
 
+# yay i can use github from VS CODE! :D
+
 import math # imports everything we need to write the code
 import random
 import sys
