@@ -27,8 +27,10 @@ class Player1(Sprite): # superclass
         self.restart_exists = False
         self.music = True
         self.music_wait = True
+        self.paused = False
         self.notes = 0
         self.score = 0
+        self.combo = 0
         self.health = 1000
         self.quit_wait = False
         self.perfects_hit = 0
@@ -39,6 +41,7 @@ class Player1(Sprite): # superclass
         self.M = "Miss:"
         self.H = "Health:"
         self.S = "Score:"
+        self.C = "Combo:"
 
     def get_keys(self):
         self.vel = vec(0,0)
@@ -238,6 +241,7 @@ class PERFECT(Sprite):
                 self.game.player1.score += 1000
                 self.game.player1.perfects_hit += 1
                 self.game.player1.notes -= 1
+                self.game.player1.combo += 1
                 if self.game.player1.health < 1000:
                     self.game.player1.health += 20
 
@@ -306,6 +310,7 @@ class GREAT(Sprite):
                 self.game.player1.score += 500
                 self.game.player1.greats_hit += 1
                 self.game.player1.notes -= 1
+                self.game.player1.combo += 1
                 if self.game.player1.health < 1000:
                     self.game.player1.health += 10
 
@@ -399,6 +404,7 @@ class Miss(Sprite):
                 self.game.player1.score -= 500
                 self.game.player1.misses_hit += 1
                 self.game.player1.notes -= 1
+                self.game.player1.combo = 0
                 if self.game.player1.health > 0:
                     self.game.player1.health -= 50
 

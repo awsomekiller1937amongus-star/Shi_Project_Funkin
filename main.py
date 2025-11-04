@@ -156,6 +156,9 @@ class Game: # creates class named Game that includes the below indented lines
       self.draw_text(self.screen, str(self.player1.misses_hit), 24, WHITE, 1045, 380)
       self.draw_text(self.screen, str(self.player1.M), 24, WHITE, 1000, 380)
 
+      self.draw_text(self.screen, str(self.player1.combo), 24, WHITE, 1045, 420)
+      self.draw_text(self.screen, str(self.player1.C), 24, WHITE, 1000, 420)
+
       self.draw_text(self.screen, str(self.player1.health), 24, WHITE, 1345, 40)
       self.draw_text(self.screen, str(self.player1.H), 24, WHITE, 1280, 40)
       
