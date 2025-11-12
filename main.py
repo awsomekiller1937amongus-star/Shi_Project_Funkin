@@ -14,10 +14,10 @@ import time
 from random import randint
 import pygame as pg
 from pygame import mixer
+from os import path
 # importing everything from other .py files
 from settings import *
 from sprites import *
-from os import path
 from Utils import *
 
 class Game: # creates class named Game that includes the below indented lines
@@ -120,6 +120,7 @@ class Game: # creates class named Game that includes the below indented lines
       
       if self.player1.music_cd.ready() and self.player1.music_loop_fix == True:
          # loads a mp3 and plays it
+         # thank you for providing me with how to play music using pygame: https://www.geeksforgeeks.org/python/python-playing-audio-file-in-pygame/
          mixer.init()
 
          mixer.music.load("sound/Music_1.mp3")
