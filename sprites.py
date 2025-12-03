@@ -28,6 +28,7 @@ class Player1(Sprite): # superclass
         self.music = True
         self.music_wait = True
         self.paused = False
+        self.level = None
         self.notes = 0
         self.score = 0
         self.combo = 0
@@ -196,6 +197,8 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             if str(hits[0].__class__.__name__) == "Restart":
                 # tells code in main.py in update to spawn the restart button
                 self.game.player1.restart = True
+            if str(hits[0].__class__.__name__) == "Level":
+                self.game.player1.level = LEVEL1
 
     def update(self):
         self.pos += self.vel
@@ -217,6 +220,7 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             self.wait = False
 
         self.collide_with_stuff(self.game.all_restarts, True)
+        self.collide_with_stuff(self.game.all_levels, True)
 
 class PERFECT(Sprite):
     def __init__(self, game, x, y, type):
@@ -428,6 +432,23 @@ class Miss(Sprite):
             self.rect.y = self.game.player4.pos.y-155
         
         self.collide_with_stuff(self.game.all_notes, True)
+
+class Level(Sprite):
+    def __init__(self, game, x, y, type):
+        self.game = game
+        self.groups = game.all_sprites, game.all_levels
+        Sprite.__init__(self, self.groups)
+        self.image = pg.Surface(LEVEL_SELECTOR_SIZE)
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.vel = vec(0,0)
+        self.pos = vec(x,y) * TILESIZE[0]
+        self.type = type
+
+    def update(self):
+        self.pos += self.vel
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
 
 
 
