@@ -27,16 +27,21 @@ class Game: # creates class named Game that includes the below indented lines
       self.screen = pg.display.set_mode((WIDTH, HEIGHT))
       pg.display.set_caption("Project Funkin'")
       self.playing = True
+      pg.mixer.init()
 
    # sets up a game folder directory path using the current folder containing THIS file
    # loads data from level1.txt so the Game class has a map property that uses the map class to parse the level1.txt file
    def load_data(self):
       self.game_folder = path.dirname(__file__)
+      self.img_folder = path.join(self.game_folder, 'images')
       if LEVEL == LEVEL1:
          self.map = Map(path.join(self.game_folder, LEVEL1))
       elif LEVEL == None:
          self.map = Map(path.join(self.game_folder, LEVEL_SELECTOR))
       # takes level1.txt and puts it into a list that we can use later
+      self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
+      self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
+      self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
 
    def new(self):
       self.load_data()
@@ -93,6 +98,7 @@ class Game: # creates class named Game that includes the below indented lines
 
    def update(self):
       # restarts the game when restart button gets clicked
+      self.all_sprites.update()
       global LEVEL
       if self.player1.level == LEVEL1:
          self.playing = False
@@ -169,6 +175,9 @@ class Game: # creates class named Game that includes the below indented lines
 
          self.draw_text(self.screen, str(self.player1.health), 24, WHITE, 1345, 40)
          self.draw_text(self.screen, str(self.player1.H), 24, WHITE, 1280, 40)
+
+      if LEVEL == None:
+         self.draw_text(self.screen, str(self.player1.level_select), 100, WHITE, 700, 150)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()

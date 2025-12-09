@@ -29,3 +29,13 @@ class Cooldown:
         if current_time - self.start_time >= self.time:
             return True
         return False
+
+class Spritesheet:
+    def __init__(self, filename):
+        self.spritesheet = pg.image.load(filename).convert()
+
+    def get_image(self, x, y, width, height):
+        image = pg.Surface((width, height))
+        image.blit(self.spritesheet, (0,0), (x,y, width, height))
+        image = pg.transform.scale(image, (width, height))
+        return image

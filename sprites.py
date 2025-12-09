@@ -3,6 +3,7 @@ from pygame.sprite import Sprite
 from settings import *
 from random import randint
 from Utils import *
+from os import path
 vec = pg.math.Vector2
 
 # the sprite module contains every sprite and being able to test different modules
@@ -14,9 +15,11 @@ class Player1(Sprite): # superclass
         self.game = game
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Player.png"))
         self.image = pg.Surface(HITSIZE)
-        self.image.fill(GREEN)
+        self.image = game.player1_img
         self.rect = self.image.get_rect()
+
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
         self.music_cd = Cooldown(1250)
@@ -37,6 +40,7 @@ class Player1(Sprite): # superclass
         self.perfects_hit = 0
         self.greats_hit = 0
         self.misses_hit = 0
+        self.level_select = "Level 1"
         self.P = "Perfect:"
         self.G = "Great:"
         self.M = "Miss:"
@@ -67,9 +71,11 @@ class Player2(Sprite):
         self.game = game
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Player.png"))
         self.image = pg.Surface(HITSIZE)
-        self.image.fill(GREEN)
+        self.image = game.player1_img
         self.rect = self.image.get_rect()
+        
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
@@ -92,9 +98,11 @@ class Player3(Sprite):
         self.game = game
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Player.png"))
         self.image = pg.Surface(HITSIZE)
-        self.image.fill(GREEN)
+        self.image = game.player1_img
         self.rect = self.image.get_rect()
+        
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
@@ -117,9 +125,11 @@ class Player4(Sprite):
         self.game = game
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Player.png"))
         self.image = pg.Surface(HITSIZE)
-        self.image.fill(GREEN)
+        self.image = game.player1_img
         self.rect = self.image.get_rect()
+        
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
@@ -164,9 +174,11 @@ class Restart(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_restarts
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Restart Button.png"))
         self.image = pg.Surface(RESTARTSIZE)
-        self.image.fill(BLUE)
+        self.image = game.all_restarts_img
         self.rect = self.image.get_rect()
+
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
@@ -438,16 +450,18 @@ class Level(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_levels
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Restart Button.png"))
         self.image = pg.Surface(LEVEL_SELECTOR_SIZE)
-        self.image.fill(RED)
+        self.image = game.all_levels_img
         self.rect = self.image.get_rect()
+
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
         self.type = type
 
     def update(self):
         self.pos += self.vel
-        self.rect.x = self.pos.x
+        self.rect.x = self.pos.x+5
         self.rect.y = self.pos.y
 
 

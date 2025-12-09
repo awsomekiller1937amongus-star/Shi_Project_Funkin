@@ -1,7 +1,7 @@
 from random import randint
 
 # sets every value to something to be used somewhere else
-NOTESPEED = 625
+NOTESPEED = 315
 TILESIZE = (60, 60)
 NOTESIZE = (60, 30)
 HITSIZE = (70, 70)
