@@ -32,6 +32,7 @@ class Player1(Sprite): # superclass
         self.music_wait = True
         self.paused = False
         self.level = None
+        self.playing = True
         self.notes = 0
         self.score = 0
         self.combo = 0
@@ -211,6 +212,8 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
                 self.game.player1.restart = True
             if str(hits[0].__class__.__name__) == "Level":
                 self.game.player1.level = LEVEL1
+            if str(hits[0].__class__.__name__) == "Quit_Button":
+                self.game.player1.playing = False
 
     def update(self):
         self.pos += self.vel
@@ -233,6 +236,7 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
 
         self.collide_with_stuff(self.game.all_restarts, True)
         self.collide_with_stuff(self.game.all_levels, True)
+        self.collide_with_stuff(self.game.all_quit_buttons, False)
 
 class PERFECT(Sprite):
     def __init__(self, game, x, y, type):
@@ -464,8 +468,23 @@ class Level(Sprite):
         self.rect.x = self.pos.x+5
         self.rect.y = self.pos.y
 
+class Quit_Button(Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = game.all_sprites, game.all_quit_buttons
+        Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Quit Button.png"))
+        self.image = pg.Surface(QUIT_BUTTON_SIZE)
+        self.image = game.all_quit_buttons_img
+        self.rect = self.image.get_rect()
 
+        self.vel = vec(0,0)
+        self.pos = vec(x,y) * TILESIZE[0]
 
+    def update(self):
+        self.pos += self.vel
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
 
             
 

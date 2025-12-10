@@ -2,6 +2,7 @@ from random import randint
 
 # sets every value to something to be used somewhere else
 NOTESPEED = 315
+QUIT_BUTTON_SIZE = (100, 100)
 TILESIZE = (60, 60)
 NOTESIZE = (60, 30)
 HITSIZE = (70, 70)

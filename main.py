@@ -42,6 +42,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
       self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
       self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
+      self.all_quit_buttons_img = pg.image.load(path.join(self.img_folder, 'Quit Button.png')).convert_alpha()
 
    def new(self):
       self.load_data()
@@ -55,6 +56,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_restarts = pg.sprite.Group()
       self.all_mouses = pg.sprite.Group()
       self.all_levels = pg.sprite.Group()
+      self.all_quit_buttons = pg.sprite.Group()
 
       for row, tiles, in enumerate(self.map.data):
          for col, tile, in enumerate(tiles): # from self.map checks if something meets the selected number/letter
@@ -81,6 +83,8 @@ class Game: # creates class named Game that includes the below indented lines
                Miss(self, -999, -999, numbertypemiss)
             elif tile == 'L':
                Level(self, col, row, '1')
+            elif tile == 'X':
+               Quit_Button(self, col, row)
                   
 
    def run(self):
@@ -185,7 +189,7 @@ class Game: # creates class named Game that includes the below indented lines
    def events(self):
       keys = pg.key.get_pressed()
       for event in pg.event.get():
-         if event.type == pg.QUIT: # checks if you try to quit the game
+         if event.type == pg.QUIT or self.player1.playing == False: # checks if you try to quit the game
             print("this is happening")
             self.playing = False
          if event.type == pg.MOUSEBUTTONDOWN:
