@@ -154,8 +154,9 @@ class Note(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_notes
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Note.png"))
         self.image = pg.Surface(NOTESIZE)
-        self.image.fill(WHITE)
+        self.image = game.all_notes_img
         self.rect = self.image.get_rect()
         self.speed = NOTESPEED
         self.vel = vec(0,0)
@@ -163,7 +164,7 @@ class Note(Sprite):
 
     def update(self):
         self.pos += self.vel
-        self.rect.x = self.pos.x
+        self.rect.x = self.pos.x-5
         self.rect.y = self.pos.y
         if self.game.player1.health == 0 and self.game.player1.mode == 1:
             self.vel.y = 0
@@ -189,7 +190,7 @@ class Restart(Sprite):
         self.rect.y = self.pos.y
 
         self.pos.x = 1200
-        self.pos.y = 200
+        self.pos.y = 300
 
 class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
     def __init__(self, game, x, y):
@@ -243,8 +244,9 @@ class PERFECT(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_perfects
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Invisible1.png"))
         self.image = pg.Surface(PERFECTSIZE)
-        self.image.fill(RED)
+        self.image = game.all_invisibles1_img
         self.rect = self.image.get_rect()
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
@@ -312,8 +314,9 @@ class GREAT(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_greats
         Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Invisible2.png"))
         self.image = pg.Surface(GREATSIZE)
-        self.image.fill(DARK_GREY)
+        self.image = game.all_invisibles2_img
         self.rect = self.image.get_rect()
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
@@ -410,7 +413,6 @@ class Miss(Sprite):
         self.groups = game.all_sprites, game.all_misses
         Sprite.__init__(self, self.groups)
         self.image = pg.Surface(MISSSIZE)
-        self.image.fill(WHITE)
         self.rect = self.image.get_rect()
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
@@ -421,7 +423,6 @@ class Miss(Sprite):
         if hits:
             if str(hits[0].__class__.__name__) == "Note":
                 print("Note hit Miss")
-                self.game.player1.score -= 500
                 self.game.player1.misses_hit += 1
                 self.game.player1.notes -= 1
                 self.game.player1.combo = 0

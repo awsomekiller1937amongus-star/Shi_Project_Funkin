@@ -11,6 +11,7 @@ import math # imports everything we need to write the code
 import random
 import sys
 import time
+import shelve
 from random import randint
 import pygame as pg
 from pygame import mixer
@@ -28,6 +29,7 @@ class Game: # creates class named Game that includes the below indented lines
       pg.display.set_caption("Project Funkin'")
       self.playing = True
       pg.mixer.init()
+      pg.display.init()
 
    # sets up a game folder directory path using the current folder containing THIS file
    # loads data from level1.txt so the Game class has a map property that uses the map class to parse the level1.txt file
@@ -39,10 +41,21 @@ class Game: # creates class named Game that includes the below indented lines
       elif LEVEL == None:
          self.map = Map(path.join(self.game_folder, LEVEL_SELECTOR))
       # takes level1.txt and puts it into a list that we can use later
+
+      hs_path = path.join(self.game_folder, 'level1 highscore')
+      d = shelve.open(hs_path)
+      if 'level1 highscore' not in d:
+         d['level1 highscore'] = 0
+      self.level1_highscore = d['level1 highscore']
+      d.close()
+      
       self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
       self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
       self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
       self.all_quit_buttons_img = pg.image.load(path.join(self.img_folder, 'Quit Button.png')).convert_alpha()
+      self.all_notes_img = pg.image.load(path.join(self.img_folder, 'Note.png')).convert_alpha()
+      self.all_invisibles1_img = pg.image.load(path.join(self.img_folder, 'Invisible1.png')).convert_alpha()
+      self.all_invisibles2_img = pg.image.load(path.join(self.img_folder, 'Invisible2.png')).convert_alpha()
 
    def new(self):
       self.load_data()
@@ -86,7 +99,6 @@ class Game: # creates class named Game that includes the below indented lines
             elif tile == 'X':
                Quit_Button(self, col, row)
                   
-
    def run(self):
       while self.playing == True:
          # self.dt used for time
@@ -98,18 +110,17 @@ class Game: # creates class named Game that includes the below indented lines
          # output
          self.draw()
       pg.quit()
-        
 
    def update(self):
       # restarts the game when restart button gets clicked
       self.all_sprites.update()
       global LEVEL
       if self.player1.level == LEVEL1:
+         self.player1.level = True
          self.playing = False
+         LEVEL = LEVEL1
          g = Game()
-         LEVEL = LEVEL1
          g.new()
-         LEVEL = LEVEL1
          g.run()
       if LEVEL != None:
          if self.player1.restart == True:
@@ -122,6 +133,13 @@ class Game: # creates class named Game that includes the below indented lines
             g.new()
             g.run()
          if self.player1.notes == 0 and self.player1.mode == 1 or self.player1.health == 0 and self.player1.mode == 1:
+            if self.player1.score > self.level1_highscore:
+               self.level1_highscore = self.player1.score
+
+               d = shelve.open(path.join(self.game_folder, 'level1 highscore'))
+               d['level1 highscore'] = self.level1_highscore
+               d.close()
+
             if self.player1.restart_exists == False:
                # when notes do not exists or when you die summons restart and stops music
                Restart(self, -999, -999)
@@ -137,8 +155,6 @@ class Game: # creates class named Game that includes the below indented lines
             # loads a mp3 and plays it
             # thank you for providing me with how to play music using pygame: https://www.geeksforgeeks.org/python/python-playing-audio-file-in-pygame/
             if LEVEL == LEVEL1:
-               mixer.init()
-
                mixer.music.load("sound/Music_1.mp3")
 
                mixer.music.set_volume(0.7)
@@ -146,8 +162,6 @@ class Game: # creates class named Game that includes the below indented lines
                mixer.music.play()
 
                self.player1.music_loop_fix = False
-
-
 
       self.all_sprites.update()
    # makes a draw text function to be used later
@@ -182,6 +196,10 @@ class Game: # creates class named Game that includes the below indented lines
 
       if LEVEL == None:
          self.draw_text(self.screen, str(self.player1.level_select), 100, WHITE, 700, 150)
+
+         self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
+
+         self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 700, 425)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()
