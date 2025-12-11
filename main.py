@@ -36,12 +36,21 @@ class Game: # creates class named Game that includes the below indented lines
    def load_data(self):
       self.game_folder = path.dirname(__file__)
       self.img_folder = path.join(self.game_folder, 'images')
+      #  Takes Level types and puts them into a list to be used later
       if LEVEL == LEVEL1:
          self.map = Map(path.join(self.game_folder, LEVEL1))
+      elif LEVEL == LEVEL2:
+         self.map = Map(path.join(self.game_folder, LEVEL2))
+      elif LEVEL == LEVEL3:
+         self.map = Map(path.join(self.game_folder, LEVEL3))
+      elif LEVEL == LEVEL4:
+         self.map = Map(path.join(self.game_folder, LEVEL4))
+      elif LEVEL == LEVEL5:
+         self.map = Map(path.join(self.game_folder, LEVEL5))
       elif LEVEL == None:
          self.map = Map(path.join(self.game_folder, LEVEL_SELECTOR))
-      # takes level1.txt and puts it into a list that we can use later
 
+      #  Loads saved highscores
       hs_path = path.join(self.game_folder, 'level1 highscore')
       d = shelve.open(hs_path)
       if 'level1 highscore' not in d:
@@ -77,6 +86,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.level5_highscore = d['level5 highscore']
       d.close()
 
+      #  Loads images for ingame sprites
       self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
       self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
       self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
@@ -148,9 +158,9 @@ class Game: # creates class named Game that includes the below indented lines
       pg.quit()
 
    def update(self):
-      # restarts the game when restart button gets clicked
       self.all_sprites.update()
       global LEVEL
+      #  Restarts game instead with a different level so it will load a different map
       if self.player1.level == LEVEL1:
          self.player1.level = True
          self.playing = False
@@ -158,10 +168,40 @@ class Game: # creates class named Game that includes the below indented lines
          g = Game()
          g.new()
          g.run()
+      elif self.player1.level == LEVEL2:
+         self.player1.level = True
+         self.playing = False
+         LEVEL = LEVEL2
+         g = Game()
+         g.new()
+         g.run()
+      elif self.player1.level == LEVEL3:
+         self.player1.level = True
+         self.playing = False
+         LEVEL = LEVEL3
+         g = Game()
+         g.new()
+         g.run()
+      elif self.player1.level == LEVEL4:
+         self.player1.level = True
+         self.playing = False
+         LEVEL = LEVEL4
+         g = Game()
+         g.new()
+         g.run()
+      elif self.player1.level == LEVEL5:
+         self.player1.level = True
+         self.playing = False
+         LEVEL = LEVEL5
+         g = Game()
+         g.new()
+         g.run()
       if self.player1.level_selected > 5:
          self.player1.level_selected = 1
       if self.player1.level_selected < 1:
          self.player1.level_selected = 5
+
+      # restarts the game when restart button gets clicked
       if LEVEL != None:
          if self.player1.restart == True:
             self.player1.restart = False
@@ -173,6 +213,7 @@ class Game: # creates class named Game that includes the below indented lines
             g.new()
             g.run()
          if self.player1.notes == 0 and self.player1.mode == 1 or self.player1.health == 0 and self.player1.mode == 1:
+            #  Saves score only based off which level
             if LEVEL == LEVEL1:
                if self.player1.score > self.level1_highscore:
                   self.level1_highscore = self.player1.score
@@ -225,12 +266,48 @@ class Game: # creates class named Game that includes the below indented lines
             self.player1.music = False
       
          if self.player1.music_cd.ready() and self.player1.music_loop_fix == True:
-            # loads a mp3 and plays it
+            # loads a mp3 and plays it based on level
             # thank you for providing me with how to play music using pygame: https://www.geeksforgeeks.org/python/python-playing-audio-file-in-pygame/
             if LEVEL == LEVEL1:
                mixer.music.load("sound/Music_1.mp3")
 
                mixer.music.set_volume(0.7)
+
+               mixer.music.play()
+
+               self.player1.music_loop_fix = False
+
+            elif LEVEL == LEVEL2:
+               mixer.music.load("sound/Music_2.mp3")
+
+               mixer.music.set_volume(1)
+
+               mixer.music.play()
+
+               self.player1.music_loop_fix = False
+
+            elif LEVEL == LEVEL3:
+               mixer.music.load("sound/Music_3.mp3")
+
+               mixer.music.set_volume(1)
+
+               mixer.music.play()
+
+               self.player1.music_loop_fix = False
+
+            elif LEVEL == LEVEL4:
+               mixer.music.load("sound/Music_4.mp3")
+
+               mixer.music.set_volume(1)
+
+               mixer.music.play()
+
+               self.player1.music_loop_fix = False
+
+            elif LEVEL == LEVEL5:
+               mixer.music.load("sound/Music_5.mp3")
+
+               mixer.music.set_volume(1)
 
                mixer.music.play()
 
@@ -249,6 +326,7 @@ class Game: # creates class named Game that includes the below indented lines
    def draw(self):
       self.screen.fill(BLACK)
       if LEVEL != None:
+         #  In game text
          self.draw_text(self.screen, str(self.player1.score), 24, WHITE, 160, 40)
          self.draw_text(self.screen, str(self.player1.S), 24, WHITE, 100, 40)
 
@@ -268,9 +346,12 @@ class Game: # creates class named Game that includes the below indented lines
          self.draw_text(self.screen, str(self.player1.H), 24, WHITE, 1280, 40)
 
       if LEVEL == None:
+         #  text shown for Level Selector
          self.draw_text(self.screen, str(self.player1.level_selected), 100, WHITE, 800, 150)
          self.draw_text(self.screen, str("Level"), 100, WHITE, 650, 150)
          self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 700, 425)
+
+         #  Shows text based on what level is selected
          if self.player1.level_selected == 1:
             self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
          if self.player1.level_selected == 2:
@@ -292,6 +373,7 @@ class Game: # creates class named Game that includes the below indented lines
             print("this is happening")
             self.playing = False
          if event.type == pg.MOUSEBUTTONDOWN:
+            # spawns mouse when mousebutton is down
             Mouse(self, -999, -999)
          global numbertypeperfect
          global numbertypegreat

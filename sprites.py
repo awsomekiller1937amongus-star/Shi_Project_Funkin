@@ -15,6 +15,7 @@ class Player1(Sprite): # superclass
         self.game = game
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
+        # gives player a spritesheet so instead of a rectangle it's a custom made sprite
         self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Player.png"))
         self.image = pg.Surface(HITSIZE)
         self.image = game.player1_img
@@ -22,6 +23,7 @@ class Player1(Sprite): # superclass
 
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
+        #   Values used in order to be easier to manage
         self.music_cd = Cooldown(1250)
         self.music_loop_fix = True
         self.mode = GAMEMODE
@@ -49,19 +51,12 @@ class Player1(Sprite): # superclass
         self.S = "Score:"
         self.C = "Combo:"
 
-    def get_keys(self):
-        self.vel = vec(0,0)
-        keys = pg.key.get_pressed()
-
     def update(self):
-
-        self.get_keys()
-
         self.pos += self.vel
         # small positioning so it is centered
         self.rect.x = self.pos.x-5
         self.rect.y = self.pos.y-5
-
+        # Makes sure health isnt more or less than it should be
         if self.health > 1000:
             self.health = 1000
         if self.health < 0:
@@ -80,13 +75,7 @@ class Player2(Sprite):
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
-    def get_keys(self):
-        self.vel = vec(0,0)
-        keys = pg.key.get_pressed()
-
     def update(self):
-
-        self.get_keys()
 
         self.pos += self.vel
 
@@ -107,13 +96,7 @@ class Player3(Sprite):
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
-    def get_keys(self):
-        self.vel = vec(0,0)
-        keys = pg.key.get_pressed()
-
     def update(self):
-
-        self.get_keys()
 
         self.pos += self.vel
 
@@ -134,13 +117,7 @@ class Player4(Sprite):
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
-    def get_keys(self):
-        self.vel = vec(0,0)
-        keys = pg.key.get_pressed()
-
     def update(self):
-
-        self.get_keys()
 
         self.pos += self.vel
 
@@ -166,6 +143,7 @@ class Note(Sprite):
         self.pos += self.vel
         self.rect.x = self.pos.x-5
         self.rect.y = self.pos.y
+        #   stops notes whenever you die
         if self.game.player1.health == 0 and self.game.player1.mode == 1:
             self.vel.y = 0
         else:
