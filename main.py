@@ -202,6 +202,7 @@ class Game: # creates class named Game that includes the below indented lines
          g.run()
       elif self.player1.level == 'Back':
          self.player1.level = None
+         mixer.music.stop()
          self.playing = False
          LEVEL = None
          g = Game()
