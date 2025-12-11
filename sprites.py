@@ -41,7 +41,7 @@ class Player1(Sprite): # superclass
         self.perfects_hit = 0
         self.greats_hit = 0
         self.misses_hit = 0
-        self.level_select = "Level 1"
+        self.level_selected = 1
         self.P = "Perfect:"
         self.G = "Great:"
         self.M = "Miss:"
@@ -201,6 +201,7 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.kill_cd = Cooldown(50)
+        self.level_change_cd = Cooldown(100)
         self.wait = False
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
@@ -212,10 +213,16 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
                 # tells code in main.py in update to spawn the restart button
                 self.game.player1.restart = True
             if str(hits[0].__class__.__name__) == "Level":
-                self.game.player1.level = LEVEL1
+                if self.game.player1.level_selected == 1:
+                    self.game.player1.level = LEVEL1
             if str(hits[0].__class__.__name__) == "Quit_Button":
                 self.game.player1.playing = False
-
+            if str(hits[0].__class__.__name__) == "Right_Arrow":
+                self.game.player1.level_selected += 1
+                self.level_change_cd.start()
+            if str(hits[0].__class__.__name__) == "Left_Arrow":
+                self.game.player1.level_selected -= 1
+                self.level_change_cd.start()
     def update(self):
         self.pos += self.vel
         self.rect.x = self.pos.x
@@ -236,8 +243,15 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             self.wait = False
 
         self.collide_with_stuff(self.game.all_restarts, True)
-        self.collide_with_stuff(self.game.all_levels, True)
+
+        if self.game.player1.level_selected == 1:
+            self.collide_with_stuff(self.game.all_levels, True)
+
         self.collide_with_stuff(self.game.all_quit_buttons, False)
+
+        if self.level_change_cd.ready():
+            self.collide_with_stuff(self.game.all_right_arrows, False)
+            self.collide_with_stuff(self.game.all_left_arrows, False)
 
 class PERFECT(Sprite):
     def __init__(self, game, x, y, type):
@@ -455,7 +469,7 @@ class Level(Sprite):
         self.game = game
         self.groups = game.all_sprites, game.all_levels
         Sprite.__init__(self, self.groups)
-        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Restart Button.png"))
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Level Start.png"))
         self.image = pg.Surface(LEVEL_SELECTOR_SIZE)
         self.image = game.all_levels_img
         self.rect = self.image.get_rect()
@@ -487,5 +501,38 @@ class Quit_Button(Sprite):
         self.rect.x = self.pos.x
         self.rect.y = self.pos.y
 
-            
+class Right_Arrow(Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = game.all_sprites, game.all_right_arrows
+        Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Right Arrow.png"))
+        self.image = pg.Surface(ARROW_SIZE)
+        self.image = game.all_right_arrows_img
+        self.rect = self.image.get_rect()
 
+        self.vel = vec(0,0)
+        self.pos = vec(x,y) * TILESIZE[0]
+
+    def update(self):
+        self.pos += self.vel
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y            
+
+class Left_Arrow(Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = game.all_sprites, game.all_left_arrows
+        Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Left Arrow.png"))
+        self.image = pg.Surface(ARROW_SIZE)
+        self.image = game.all_left_arrows_img
+        self.rect = self.image.get_rect()
+
+        self.vel = vec(0,0)
+        self.pos = vec(x,y) * TILESIZE[0]
+
+    def update(self):
+        self.pos += self.vel
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y

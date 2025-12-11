@@ -48,7 +48,35 @@ class Game: # creates class named Game that includes the below indented lines
          d['level1 highscore'] = 0
       self.level1_highscore = d['level1 highscore']
       d.close()
+
+      hs_path = path.join(self.game_folder, 'level2 highscore')
+      d = shelve.open(hs_path)
+      if 'level2 highscore' not in d:
+         d['level2 highscore'] = 0
+      self.level2_highscore = d['level2 highscore']
+      d.close()
+
+      hs_path = path.join(self.game_folder, 'level3 highscore')
+      d = shelve.open(hs_path)
+      if 'level3 highscore' not in d:
+         d['level3 highscore'] = 0
+      self.level3_highscore = d['level3 highscore']
+      d.close()
+
+      hs_path = path.join(self.game_folder, 'level4 highscore')
+      d = shelve.open(hs_path)
+      if 'level4 highscore' not in d:
+         d['level4 highscore'] = 0
+      self.level4_highscore = d['level4 highscore']
+      d.close()
       
+      hs_path = path.join(self.game_folder, 'level5 highscore')
+      d = shelve.open(hs_path)
+      if 'level5 highscore' not in d:
+         d['level5 highscore'] = 0
+      self.level5_highscore = d['level5 highscore']
+      d.close()
+
       self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
       self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
       self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
@@ -56,6 +84,8 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_notes_img = pg.image.load(path.join(self.img_folder, 'Note.png')).convert_alpha()
       self.all_invisibles1_img = pg.image.load(path.join(self.img_folder, 'Invisible1.png')).convert_alpha()
       self.all_invisibles2_img = pg.image.load(path.join(self.img_folder, 'Invisible2.png')).convert_alpha()
+      self.all_right_arrows_img = pg.image.load(path.join(self.img_folder, 'Right Arrow.png')).convert_alpha()
+      self.all_left_arrows_img = pg.image.load(path.join(self.img_folder, 'Left Arrow.png')).convert_alpha()
 
    def new(self):
       self.load_data()
@@ -70,6 +100,8 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_mouses = pg.sprite.Group()
       self.all_levels = pg.sprite.Group()
       self.all_quit_buttons = pg.sprite.Group()
+      self.all_right_arrows = pg.sprite.Group()
+      self.all_left_arrows = pg.sprite.Group()
 
       for row, tiles, in enumerate(self.map.data):
          for col, tile, in enumerate(tiles): # from self.map checks if something meets the selected number/letter
@@ -94,10 +126,14 @@ class Game: # creates class named Game that includes the below indented lines
                self.player4 = Player4(self, col, row)
                numbertypemiss = "4"
                Miss(self, -999, -999, numbertypemiss)
-            elif tile == 'L':
+            elif tile == 'S':
                Level(self, col, row, '1')
             elif tile == 'X':
                Quit_Button(self, col, row)
+            elif tile == 'R':
+               Right_Arrow(self, col, row)
+            elif tile == 'L':
+               Left_Arrow(self, col, row)
                   
    def run(self):
       while self.playing == True:
@@ -122,6 +158,10 @@ class Game: # creates class named Game that includes the below indented lines
          g = Game()
          g.new()
          g.run()
+      if self.player1.level_selected > 5:
+         self.player1.level_selected = 1
+      if self.player1.level_selected < 1:
+         self.player1.level_selected = 5
       if LEVEL != None:
          if self.player1.restart == True:
             self.player1.restart = False
@@ -133,12 +173,45 @@ class Game: # creates class named Game that includes the below indented lines
             g.new()
             g.run()
          if self.player1.notes == 0 and self.player1.mode == 1 or self.player1.health == 0 and self.player1.mode == 1:
-            if self.player1.score > self.level1_highscore:
-               self.level1_highscore = self.player1.score
+            if LEVEL == LEVEL1:
+               if self.player1.score > self.level1_highscore:
+                  self.level1_highscore = self.player1.score
 
-               d = shelve.open(path.join(self.game_folder, 'level1 highscore'))
-               d['level1 highscore'] = self.level1_highscore
-               d.close()
+                  d = shelve.open(path.join(self.game_folder, 'level1 highscore'))
+                  d['level1 highscore'] = self.level1_highscore
+                  d.close()
+
+            elif LEVEL == LEVEL2:
+               if self.player1.score > self.level2_highscore:
+                  self.level2_highscore = self.player1.score
+
+                  d = shelve.open(path.join(self.game_folder, 'level2 highscore'))
+                  d['level2 highscore'] = self.level2_highscore
+                  d.close()
+
+            elif LEVEL == LEVEL3:
+               if self.player1.score > self.level3_highscore:
+                  self.level3_highscore = self.player1.score
+
+                  d = shelve.open(path.join(self.game_folder, 'level3 highscore'))
+                  d['level3 highscore'] = self.level3_highscore
+                  d.close()
+
+            elif LEVEL == LEVEL4:
+               if self.player1.score > self.level4_highscore:
+                  self.level4_highscore = self.player1.score
+
+                  d = shelve.open(path.join(self.game_folder, 'level4 highscore'))
+                  d['level4 highscore'] = self.level4_highscore
+                  d.close()
+
+            elif LEVEL == LEVEL5:
+               if self.player1.score > self.level5_highscore:
+                  self.level5_highscore = self.player1.score
+
+                  d = shelve.open(path.join(self.game_folder, 'level5 highscore'))
+                  d['level5 highscore'] = self.level5_highscore
+                  d.close()
 
             if self.player1.restart_exists == False:
                # when notes do not exists or when you die summons restart and stops music
@@ -195,11 +268,19 @@ class Game: # creates class named Game that includes the below indented lines
          self.draw_text(self.screen, str(self.player1.H), 24, WHITE, 1280, 40)
 
       if LEVEL == None:
-         self.draw_text(self.screen, str(self.player1.level_select), 100, WHITE, 700, 150)
-
-         self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
-
+         self.draw_text(self.screen, str(self.player1.level_selected), 100, WHITE, 800, 150)
+         self.draw_text(self.screen, str("Level"), 100, WHITE, 650, 150)
          self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 700, 425)
+         if self.player1.level_selected == 1:
+            self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
+         if self.player1.level_selected == 2:
+            self.draw_text(self.screen, str(self.level2_highscore), 50, WHITE, 700, 500)
+         if self.player1.level_selected == 3:
+            self.draw_text(self.screen, str(self.level3_highscore), 50, WHITE, 700, 500)
+         if self.player1.level_selected == 4:
+            self.draw_text(self.screen, str(self.level4_highscore), 50, WHITE, 700, 500)
+         if self.player1.level_selected == 5:
+            self.draw_text(self.screen, str(self.level5_highscore), 50, WHITE, 700, 500)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()
@@ -226,7 +307,7 @@ class Game: # creates class named Game that includes the below indented lines
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "11"
                   GREAT(self, -999, -999, numbertypegreat)
-                  print("A")
+                  print("Left")
                if keys[pg.K_s]:
                   numbertypeperfect = "2"
                   PERFECT(self, -999, -999, numbertypeperfect)
@@ -234,7 +315,7 @@ class Game: # creates class named Game that includes the below indented lines
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "22"
                   GREAT(self, -999, -999, numbertypegreat)
-                  print("S")
+                  print("Down")
                if keys[pg.K_k]:
                   numbertypeperfect = "3"
                   PERFECT(self, -999, -999, numbertypeperfect)
@@ -242,7 +323,7 @@ class Game: # creates class named Game that includes the below indented lines
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "33"
                   GREAT(self, -999, -999, numbertypegreat)
-                  print("K")
+                  print("Up")
                if keys[pg.K_l]:
                   numbertypeperfect = "4"
                   PERFECT(self, -999, -999, numbertypeperfect)
@@ -250,7 +331,7 @@ class Game: # creates class named Game that includes the below indented lines
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "44"
                   GREAT(self, -999, -999, numbertypegreat)
-                  print("L")
+                  print("Right")
       
 
 
