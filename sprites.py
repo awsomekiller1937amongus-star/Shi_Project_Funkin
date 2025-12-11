@@ -193,6 +193,14 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             if str(hits[0].__class__.__name__) == "Level":
                 if self.game.player1.level_selected == 1:
                     self.game.player1.level = LEVEL1
+                elif self.game.player1.level_selected == 2:
+                    self.game.player1.level = LEVEL2
+                elif self.game.player1.level_selected == 3:
+                    self.game.player1.level = LEVEL3
+                elif self.game.player1.level_selected == 4:
+                    self.game.player1.level = LEVEL4
+                elif self.game.player1.level_selected == 5:
+                    self.game.player1.level = LEVEL5
             if str(hits[0].__class__.__name__) == "Quit_Button":
                 self.game.player1.playing = False
             if str(hits[0].__class__.__name__) == "Right_Arrow":
@@ -222,7 +230,7 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
 
         self.collide_with_stuff(self.game.all_restarts, True)
 
-        if self.game.player1.level_selected == 1:
+        if self.game.player1.level_selected >= 1:
             self.collide_with_stuff(self.game.all_levels, True)
 
         self.collide_with_stuff(self.game.all_quit_buttons, False)
