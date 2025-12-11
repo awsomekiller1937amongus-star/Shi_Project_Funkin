@@ -164,9 +164,15 @@ class Game: # creates class named Game that includes the below indented lines
    def update(self):
       self.all_sprites.update()
       global LEVEL
+      global LOOPFIX1
+      global LOOPFIX2
+      global LOOPFIX3
+      global LOOPFIX4
+      global LOOPFIX5
       #  Restarts game instead with a different level so it will load a different map
       if self.player1.level == LEVEL1:
          self.player1.level = True
+         LOOPFIX1 = False
          mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL1
@@ -335,11 +341,6 @@ class Game: # creates class named Game that includes the below indented lines
          mixer.music.stop()
 
       if LEVEL == None:
-         global LOOPFIX1
-         global LOOPFIX2
-         global LOOPFIX3
-         global LOOPFIX4
-         global LOOPFIX5
          if self.player1.level_selected == 1 and LOOPFIX1 == False:
             LOOPFIX1 = True
             
@@ -431,25 +432,25 @@ class Game: # creates class named Game that includes the below indented lines
          #  text shown for Level Selector
          self.draw_text(self.screen, str(self.player1.level_selected), 100, WHITE, 810, 150)
          self.draw_text(self.screen, str("Level"), 100, WHITE, 660, 150)
-         self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 700, 425)
-         self.draw_text(self.screen, str("Song Length:"), 40, WHITE, 700, 5)
+         self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 690, 425)
+         self.draw_text(self.screen, str("Song Length:"), 40, WHITE, 690, 5)
 
          #  Shows text based on what level is selected
          if self.player1.level_selected == 1:
-            self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
-            self.draw_text(self.screen, str("1:25"), 40, WHITE, 700, 50)
+            self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 690, 500)
+            self.draw_text(self.screen, str("1:25"), 40, WHITE, 690, 50)
          if self.player1.level_selected == 2:
-            self.draw_text(self.screen, str(self.level2_highscore), 50, WHITE, 700, 500)
-            self.draw_text(self.screen, str("4:00"), 40, WHITE, 700, 50)
+            self.draw_text(self.screen, str(self.level2_highscore), 50, WHITE, 690, 500)
+            self.draw_text(self.screen, str("4:00"), 40, WHITE, 690, 50)
          if self.player1.level_selected == 3:
-            self.draw_text(self.screen, str(self.level3_highscore), 50, WHITE, 700, 500)
-            self.draw_text(self.screen, str("1:18"), 40, WHITE, 700, 50)
+            self.draw_text(self.screen, str(self.level3_highscore), 50, WHITE, 690, 500)
+            self.draw_text(self.screen, str("1:18"), 40, WHITE, 690, 50)
          if self.player1.level_selected == 4:
-            self.draw_text(self.screen, str(self.level4_highscore), 50, WHITE, 700, 500)
-            self.draw_text(self.screen, str("2:22"), 40, WHITE, 700, 50)
+            self.draw_text(self.screen, str(self.level4_highscore), 50, WHITE, 690, 500)
+            self.draw_text(self.screen, str("2:22"), 40, WHITE, 690, 50)
          if self.player1.level_selected == 5:
-            self.draw_text(self.screen, str(self.level5_highscore), 50, WHITE, 700, 500)
-            self.draw_text(self.screen, str("1:46"), 40, WHITE, 700, 50)
+            self.draw_text(self.screen, str(self.level5_highscore), 50, WHITE, 690, 500)
+            self.draw_text(self.screen, str("1:46"), 40, WHITE, 690, 50)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()
