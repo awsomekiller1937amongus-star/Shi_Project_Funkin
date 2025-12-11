@@ -429,21 +429,27 @@ class Game: # creates class named Game that includes the below indented lines
 
       if LEVEL == None:
          #  text shown for Level Selector
-         self.draw_text(self.screen, str(self.player1.level_selected), 100, WHITE, 800, 150)
-         self.draw_text(self.screen, str("Level"), 100, WHITE, 650, 150)
+         self.draw_text(self.screen, str(self.player1.level_selected), 100, WHITE, 810, 150)
+         self.draw_text(self.screen, str("Level"), 100, WHITE, 660, 150)
          self.draw_text(self.screen, str("Highscore:"), 50, WHITE, 700, 425)
+         self.draw_text(self.screen, str("Song Length:"), 40, WHITE, 700, 5)
 
          #  Shows text based on what level is selected
          if self.player1.level_selected == 1:
             self.draw_text(self.screen, str(self.level1_highscore), 50, WHITE, 700, 500)
+            self.draw_text(self.screen, str("1:25"), 40, WHITE, 700, 50)
          if self.player1.level_selected == 2:
             self.draw_text(self.screen, str(self.level2_highscore), 50, WHITE, 700, 500)
+            self.draw_text(self.screen, str("4:00"), 40, WHITE, 700, 50)
          if self.player1.level_selected == 3:
             self.draw_text(self.screen, str(self.level3_highscore), 50, WHITE, 700, 500)
+            self.draw_text(self.screen, str("1:18"), 40, WHITE, 700, 50)
          if self.player1.level_selected == 4:
             self.draw_text(self.screen, str(self.level4_highscore), 50, WHITE, 700, 500)
+            self.draw_text(self.screen, str("2:22"), 40, WHITE, 700, 50)
          if self.player1.level_selected == 5:
             self.draw_text(self.screen, str(self.level5_highscore), 50, WHITE, 700, 500)
+            self.draw_text(self.screen, str("1:46"), 40, WHITE, 700, 50)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()
