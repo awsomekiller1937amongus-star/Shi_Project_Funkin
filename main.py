@@ -96,6 +96,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_invisibles2_img = pg.image.load(path.join(self.img_folder, 'Invisible2.png')).convert_alpha()
       self.all_right_arrows_img = pg.image.load(path.join(self.img_folder, 'Right Arrow.png')).convert_alpha()
       self.all_left_arrows_img = pg.image.load(path.join(self.img_folder, 'Left Arrow.png')).convert_alpha()
+      self.all_back_arrows_img = pg.image.load(path.join(self.img_folder, 'Back Arrow.png')).convert_alpha()
 
    def new(self):
       self.load_data()
@@ -112,6 +113,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_quit_buttons = pg.sprite.Group()
       self.all_right_arrows = pg.sprite.Group()
       self.all_left_arrows = pg.sprite.Group()
+      self.all_back_arrows = pg.sprite.Group()
 
       for row, tiles, in enumerate(self.map.data):
          for col, tile, in enumerate(tiles): # from self.map checks if something meets the selected number/letter
@@ -144,6 +146,8 @@ class Game: # creates class named Game that includes the below indented lines
                Right_Arrow(self, col, row)
             elif tile == 'L':
                Left_Arrow(self, col, row)
+            elif tile == '<':
+               Back_Arrow(self, col, row)
                   
    def run(self):
       while self.playing == True:
@@ -193,6 +197,13 @@ class Game: # creates class named Game that includes the below indented lines
          self.player1.level = True
          self.playing = False
          LEVEL = LEVEL5
+         g = Game()
+         g.new()
+         g.run()
+      elif self.player1.level == 'Back':
+         self.player1.level = None
+         self.playing = False
+         LEVEL = None
          g = Game()
          g.new()
          g.run()

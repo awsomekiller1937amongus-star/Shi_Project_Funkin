@@ -209,6 +209,8 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             if str(hits[0].__class__.__name__) == "Left_Arrow":
                 self.game.player1.level_selected -= 1
                 self.level_change_cd.start()
+            if str(hits[0].__class__.__name__) == "Back_Arrow":
+                self.game.player1.level = 'Back'
     def update(self):
         self.pos += self.vel
         self.rect.x = self.pos.x
@@ -229,11 +231,11 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             self.wait = False
 
         self.collide_with_stuff(self.game.all_restarts, True)
+        self.collide_with_stuff(self.game.all_quit_buttons, False)
+        self.collide_with_stuff(self.game.all_back_arrows, False)
 
         if self.game.player1.level_selected >= 1:
             self.collide_with_stuff(self.game.all_levels, True)
-
-        self.collide_with_stuff(self.game.all_quit_buttons, False)
 
         if self.level_change_cd.ready():
             self.collide_with_stuff(self.game.all_right_arrows, False)
@@ -513,6 +515,24 @@ class Left_Arrow(Sprite):
         self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Left Arrow.png"))
         self.image = pg.Surface(ARROW_SIZE)
         self.image = game.all_left_arrows_img
+        self.rect = self.image.get_rect()
+
+        self.vel = vec(0,0)
+        self.pos = vec(x,y) * TILESIZE[0]
+
+    def update(self):
+        self.pos += self.vel
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
+
+class Back_Arrow(Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = game.all_sprites, game.all_back_arrows
+        Sprite.__init__(self, self.groups)
+        self.spritesheet = Spritesheet(path.join(self.game.img_folder, "Back Arrow.png"))
+        self.image = pg.Surface(ARROW_SIZE)
+        self.image = game.all_back_arrows_img
         self.rect = self.image.get_rect()
 
         self.vel = vec(0,0)
