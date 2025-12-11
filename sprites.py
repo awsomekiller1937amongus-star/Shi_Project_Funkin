@@ -44,6 +44,7 @@ class Player1(Sprite): # superclass
         self.greats_hit = 0
         self.misses_hit = 0
         self.level_selected = 1
+        self.stop_music = False
         self.music_stop = False
         self.P = "Perfect:"
         self.G = "Great:"
@@ -206,9 +207,11 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
                 self.game.player1.playing = False
             if str(hits[0].__class__.__name__) == "Right_Arrow":
                 self.game.player1.level_selected += 1
+                self.game.player1.stop_music = True
                 self.level_change_cd.start()
             if str(hits[0].__class__.__name__) == "Left_Arrow":
                 self.game.player1.level_selected -= 1
+                self.game.player1.stop_music = True
                 self.level_change_cd.start()
             if str(hits[0].__class__.__name__) == "Back_Arrow":
                 self.game.player1.level = 'Back'

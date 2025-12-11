@@ -167,6 +167,7 @@ class Game: # creates class named Game that includes the below indented lines
       #  Restarts game instead with a different level so it will load a different map
       if self.player1.level == LEVEL1:
          self.player1.level = True
+         mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL1
          g = Game()
@@ -174,6 +175,7 @@ class Game: # creates class named Game that includes the below indented lines
          g.run()
       elif self.player1.level == LEVEL2:
          self.player1.level = True
+         mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL2
          g = Game()
@@ -181,6 +183,7 @@ class Game: # creates class named Game that includes the below indented lines
          g.run()
       elif self.player1.level == LEVEL3:
          self.player1.level = True
+         mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL3
          g = Game()
@@ -188,6 +191,7 @@ class Game: # creates class named Game that includes the below indented lines
          g.run()
       elif self.player1.level == LEVEL4:
          self.player1.level = True
+         mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL4
          g = Game()
@@ -195,6 +199,7 @@ class Game: # creates class named Game that includes the below indented lines
          g.run()
       elif self.player1.level == LEVEL5:
          self.player1.level = True
+         mixer.music.stop()
          self.playing = False
          LEVEL = LEVEL5
          g = Game()
@@ -324,6 +329,71 @@ class Game: # creates class named Game that includes the below indented lines
                mixer.music.play()
 
                self.player1.music_loop_fix = False
+
+      if self.player1.stop_music == True:
+         self.player1.stop_music = False
+         mixer.music.stop()
+
+      if LEVEL == None:
+         global LOOPFIX1
+         global LOOPFIX2
+         global LOOPFIX3
+         global LOOPFIX4
+         global LOOPFIX5
+         if self.player1.level_selected == 1 and LOOPFIX1 == False:
+            LOOPFIX1 = True
+            
+            mixer.music.load("sound/Music_1.mp3")
+
+            mixer.music.set_volume(0.7)
+
+            mixer.music.play()
+         elif self.player1.level_selected != 1:
+            LOOPFIX1 = False
+
+         if self.player1.level_selected == 2 and LOOPFIX2 == False:
+            LOOPFIX2 = True
+            
+            mixer.music.load("sound/Music_2.mp3")
+
+            mixer.music.set_volume(0.8)
+
+            mixer.music.play()
+         elif self.player1.level_selected != 2:
+            LOOPFIX2 = False
+
+         if self.player1.level_selected == 3 and LOOPFIX3 == False:
+            LOOPFIX3 = True
+            
+            mixer.music.load("sound/Music_3.mp3")
+
+            mixer.music.set_volume(0.5)
+
+            mixer.music.play()
+         elif self.player1.level_selected != 3:
+            LOOPFIX3 = False
+
+         if self.player1.level_selected == 4 and LOOPFIX4 == False:
+            LOOPFIX4 = True
+            
+            mixer.music.load("sound/Music_4.mp3")
+
+            mixer.music.set_volume(0.9)
+
+            mixer.music.play()
+         elif self.player1.level_selected != 4:
+            LOOPFIX4 = False
+
+         if self.player1.level_selected == 5 and LOOPFIX5 == False:
+            LOOPFIX5 = True
+            
+            mixer.music.load("sound/Music_5.mp3")
+
+            mixer.music.set_volume(0.9)
+
+            mixer.music.play()
+         elif self.player1.level_selected != 5:
+            LOOPFIX5 = False
 
       self.all_sprites.update()
    # makes a draw text function to be used later
