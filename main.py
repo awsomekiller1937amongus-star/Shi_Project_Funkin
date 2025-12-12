@@ -88,6 +88,7 @@ class Game: # creates class named Game that includes the below indented lines
 
       #  Loads images for ingame sprites
       self.player1_img = pg.image.load(path.join(self.img_folder, 'Player.png')).convert_alpha()
+      self.player1_key_img = pg.image.load(path.join(self.img_folder, 'Player Key.png')).convert_alpha()
       self.all_restarts_img = pg.image.load(path.join(self.img_folder, 'Restart Button.png')).convert_alpha()
       self.all_levels_img = pg.image.load(path.join(self.img_folder, 'Level Start.png')).convert_alpha()
       self.all_quit_buttons_img = pg.image.load(path.join(self.img_folder, 'Quit Button.png')).convert_alpha()
@@ -169,6 +170,35 @@ class Game: # creates class named Game that includes the below indented lines
       global LOOPFIX3
       global LOOPFIX4
       global LOOPFIX5
+      self.keyfix_cd1 = Cooldown(500)
+      self.keyfix_cd2 = Cooldown(500)
+      self.keyfix_cd3 = Cooldown(500)
+      self.keyfix_cd4 = Cooldown(500)
+
+      if self.player1.keyfix == True:
+         self.keyfix_cd1.start()
+         self.player1.keyfix = False
+      if self.keyfix_cd1.ready():
+         self.player1.image = self.player1_img
+
+      if self.player2.keyfix == True:
+         self.keyfix_cd2.start()
+         self.player2.keyfix = False
+      if self.keyfix_cd2.ready():
+         self.player2.image = self.player1_img
+
+      if self.player3.keyfix == True:
+         self.keyfix_cd3.start()
+         self.player3.keyfix = False
+      if self.keyfix_cd3.ready():
+         self.player3.image = self.player1_img
+
+      if self.player4.keyfix == True:
+         self.keyfix_cd4.start()
+         self.player4.keyfix = False
+      if self.keyfix_cd4.ready():
+         self.player4.image = self.player1_img
+
       #  Restarts game instead with a different level so it will load a different map
       if self.player1.level == LEVEL1:
          self.player1.level = True
@@ -467,41 +497,49 @@ class Game: # creates class named Game that includes the below indented lines
          global numbertypeperfect
          global numbertypegreat
          if LEVEL != None:
-            if self.player1.health == 0 and self.player1.mode == 1 or self.player1.restart == True:
+            if self.player1.health == 0 and self.player1.mode == 1 or self.player1.restart_exists == True:
                pass
             else:
                #  when a key is clicked it will spawn a sprite
                if keys[pg.K_a]:
+                  self.player1.image = self.player1_key_img
                   numbertypeperfect = "1"
                   PERFECT(self, -999, -999, numbertypeperfect)
                   numbertypegreat = "1"
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "11"
                   GREAT(self, -999, -999, numbertypegreat)
+                  self.player1.keyfix = True
                   print("Left")
                if keys[pg.K_s]:
+                  self.player2.image = self.player1_key_img
                   numbertypeperfect = "2"
                   PERFECT(self, -999, -999, numbertypeperfect)
                   numbertypegreat = "2"
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "22"
                   GREAT(self, -999, -999, numbertypegreat)
+                  self.player2.keyfix = True
                   print("Down")
                if keys[pg.K_k]:
+                  self.player3.image = self.player1_key_img
                   numbertypeperfect = "3"
                   PERFECT(self, -999, -999, numbertypeperfect)
                   numbertypegreat = "3"
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "33"
                   GREAT(self, -999, -999, numbertypegreat)
+                  self.player3.keyfix = True
                   print("Up")
                if keys[pg.K_l]:
+                  self.player4.image = self.player1_key_img
                   numbertypeperfect = "4"
                   PERFECT(self, -999, -999, numbertypeperfect)
                   numbertypegreat = "4"
                   GREAT(self, -999, -999, numbertypegreat)
                   numbertypegreat = "44"
                   GREAT(self, -999, -999, numbertypegreat)
+                  self.player4.keyfix = True
                   print("Right")
       
 

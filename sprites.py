@@ -44,6 +44,7 @@ class Player1(Sprite): # superclass
         self.greats_hit = 0
         self.misses_hit = 0
         self.level_selected = 1
+        self.keyfix = False
         self.stop_music = False
         self.music_stop = False
         self.P = "Perfect:"
@@ -77,6 +78,8 @@ class Player2(Sprite):
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
+        self.keyfix = False
+
     def update(self):
 
         self.pos += self.vel
@@ -98,6 +101,8 @@ class Player3(Sprite):
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
 
+        self.keyfix = False
+
     def update(self):
 
         self.pos += self.vel
@@ -118,6 +123,8 @@ class Player4(Sprite):
         
         self.vel = vec(0,0)
         self.pos = vec(x,y) * TILESIZE[0]
+
+        self.keyfix = False
 
     def update(self):
 
