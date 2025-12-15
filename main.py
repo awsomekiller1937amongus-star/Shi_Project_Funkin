@@ -36,6 +36,7 @@ class Game: # creates class named Game that includes the below indented lines
    def load_data(self):
       self.game_folder = path.dirname(__file__)
       self.img_folder = path.join(self.game_folder, 'images')
+      self.snd_folder = path.join(self.game_folder, 'sound effects')
       #  Takes Level types and puts them into a list to be used later
       if LEVEL == LEVEL1:
          self.map = Map(path.join(self.game_folder, LEVEL1))
@@ -98,6 +99,11 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_right_arrows_img = pg.image.load(path.join(self.img_folder, 'Right Arrow.png')).convert_alpha()
       self.all_left_arrows_img = pg.image.load(path.join(self.img_folder, 'Left Arrow.png')).convert_alpha()
       self.all_back_arrows_img = pg.image.load(path.join(self.img_folder, 'Back Arrow.png')).convert_alpha()
+
+      self.gamestart_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Game Start.mp3'))
+      self.victory_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Victory.mp3'))
+      self.lose_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Lost.mp3'))
+      self.change_level_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Level Change.mp3'))
 
    def new(self):
       self.load_data()
@@ -165,6 +171,8 @@ class Game: # creates class named Game that includes the below indented lines
    def update(self):
       self.all_sprites.update()
       global LEVEL
+      global VICTORYSOUNDFIX
+      global LOSTSOUNDFIX
       global LOOPFIX1
       global LOOPFIX2
       global LOOPFIX3
@@ -261,10 +269,21 @@ class Game: # creates class named Game that includes the below indented lines
             self.player1.restart_exists == False
             self.player1.music = True
             self.player1.music_loop_fix = True
+            VICTORYSOUNDFIX = False
+            LOSTSOUNDFIX = False
             self.playing = False
             g = Game()
             g.new()
             g.run()
+
+         if self.player1.notes == 0 and self.player1.mode == 1 and VICTORYSOUNDFIX == False:
+            VICTORYSOUNDFIX = True
+            self.victory_sound.play()
+
+         if self.player1.health == 0 and self.player1.mode == 1 and LOSTSOUNDFIX == False:
+            LOSTSOUNDFIX = True
+            self.lose_sound.play()
+         
          if self.player1.notes == 0 and self.player1.mode == 1 or self.player1.health == 0 and self.player1.mode == 1:
             #  Saves score only based off which level
             if LEVEL == LEVEL1:
@@ -371,6 +390,8 @@ class Game: # creates class named Game that includes the below indented lines
          mixer.music.stop()
 
       if LEVEL == None:
+         VICTORYSOUNDFIX = False
+         LOSTSOUNDFIX = False
          if self.player1.level_selected == 1 and LOOPFIX1 == False:
             LOOPFIX1 = True
             
@@ -378,7 +399,7 @@ class Game: # creates class named Game that includes the below indented lines
 
             mixer.music.set_volume(0.7)
 
-            mixer.music.play()
+            mixer.music.play(loops= -1)
          elif self.player1.level_selected != 1:
             LOOPFIX1 = False
 
@@ -389,7 +410,7 @@ class Game: # creates class named Game that includes the below indented lines
 
             mixer.music.set_volume(0.8)
 
-            mixer.music.play()
+            mixer.music.play(loops= -1)
          elif self.player1.level_selected != 2:
             LOOPFIX2 = False
 
@@ -400,7 +421,7 @@ class Game: # creates class named Game that includes the below indented lines
 
             mixer.music.set_volume(0.5)
 
-            mixer.music.play()
+            mixer.music.play(loops= -1)
          elif self.player1.level_selected != 3:
             LOOPFIX3 = False
 
@@ -411,7 +432,7 @@ class Game: # creates class named Game that includes the below indented lines
 
             mixer.music.set_volume(0.9)
 
-            mixer.music.play()
+            mixer.music.play(loops= -1)
          elif self.player1.level_selected != 4:
             LOOPFIX4 = False
 
@@ -422,7 +443,7 @@ class Game: # creates class named Game that includes the below indented lines
 
             mixer.music.set_volume(0.9)
 
-            mixer.music.play()
+            mixer.music.play(loops= -1)
          elif self.player1.level_selected != 5:
             LOOPFIX5 = False
 

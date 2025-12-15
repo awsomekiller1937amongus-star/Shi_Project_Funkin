@@ -200,6 +200,8 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
                 # tells code in main.py in update to spawn the restart button
                 self.game.player1.restart = True
             if str(hits[0].__class__.__name__) == "Level":
+                self.game.gamestart_sound.play()
+
                 if self.game.player1.level_selected == 1:
                     self.game.player1.level = LEVEL1
                 elif self.game.player1.level_selected == 2:
@@ -215,10 +217,12 @@ class Mouse(Sprite): #  adds a mouse sprite used for clicking hitboxes
             if str(hits[0].__class__.__name__) == "Right_Arrow":
                 self.game.player1.level_selected += 1
                 self.game.player1.stop_music = True
+                self.game.change_level_sound.play()
                 self.level_change_cd.start()
             if str(hits[0].__class__.__name__) == "Left_Arrow":
                 self.game.player1.level_selected -= 1
                 self.game.player1.stop_music = True
+                self.game.change_level_sound.play()
                 self.level_change_cd.start()
             if str(hits[0].__class__.__name__) == "Back_Arrow":
                 self.game.player1.level = 'Back'
