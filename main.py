@@ -50,6 +50,8 @@ class Game: # creates class named Game that includes the below indented lines
          self.map = Map(path.join(self.game_folder, LEVEL5))
       elif LEVEL == None:
          self.map = Map(path.join(self.game_folder, LEVEL_SELECTOR))
+      elif LEVEL == -1:
+         self.map = Map(path.join(self.game_folder, SETTINGS_MENU))
 
       #  Loads saved highscores
       hs_path = path.join(self.game_folder, 'level1 highscore')
@@ -99,6 +101,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_right_arrows_img = pg.image.load(path.join(self.img_folder, 'Right Arrow.png')).convert_alpha()
       self.all_left_arrows_img = pg.image.load(path.join(self.img_folder, 'Left Arrow.png')).convert_alpha()
       self.all_back_arrows_img = pg.image.load(path.join(self.img_folder, 'Back Arrow.png')).convert_alpha()
+      self.all_settings_buttons_img = pg.image.load(path.join(self.img_folder, 'Settings Button.png')).convert_alpha()
 
       self.gamestart_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Game Start.mp3'))
       self.victory_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Victory.mp3'))
@@ -121,6 +124,7 @@ class Game: # creates class named Game that includes the below indented lines
       self.all_right_arrows = pg.sprite.Group()
       self.all_left_arrows = pg.sprite.Group()
       self.all_back_arrows = pg.sprite.Group()
+      self.all_settings = pg.sprite.Group()
 
       for row, tiles, in enumerate(self.map.data):
          for col, tile, in enumerate(tiles): # from self.map checks if something meets the selected number/letter
@@ -155,6 +159,8 @@ class Game: # creates class named Game that includes the below indented lines
                Left_Arrow(self, col, row)
             elif tile == '<':
                Back_Arrow(self, col, row)
+            elif tile == '~':
+               Settings(self, col, row)
                   
    def run(self):
       while self.playing == True:
@@ -178,6 +184,7 @@ class Game: # creates class named Game that includes the below indented lines
       global LOOPFIX3
       global LOOPFIX4
       global LOOPFIX5
+      global LOOPFIX6
       self.keyfix_cd1 = Cooldown(500)
       self.keyfix_cd2 = Cooldown(500)
       self.keyfix_cd3 = Cooldown(500)
@@ -257,13 +264,21 @@ class Game: # creates class named Game that includes the below indented lines
          g = Game()
          g.new()
          g.run()
+      elif self.player1.level == 'Settings':
+         self.player1.level = None
+         mixer.music.stop()
+         self.playing = False
+         LEVEL = -1
+         g = Game()
+         g.new()
+         g.run()
       if self.player1.level_selected > 5:
          self.player1.level_selected = 1
       if self.player1.level_selected < 1:
          self.player1.level_selected = 5
 
       # restarts the game when restart button gets clicked
-      if LEVEL != None:
+      if LEVEL != None and LEVEL != -1:
          if self.player1.restart == True:
             self.player1.restart = False
             self.player1.restart_exists == False
@@ -447,6 +462,17 @@ class Game: # creates class named Game that includes the below indented lines
          elif self.player1.level_selected != 5:
             LOOPFIX5 = False
 
+      if LEVEL == -1 and LOOPFIX6 == False:
+            LOOPFIX6 = True
+
+            mixer.music.load("sound/Settings_Music.mp3")
+
+            mixer.music.set_volume(1)
+
+            mixer.music.play(loops= -1)
+      elif LEVEL != -1:
+         LOOPFIX6 = False
+
       self.all_sprites.update()
    # makes a draw text function to be used later
    def draw_text(self, surface, text, size, color, x, y):
@@ -459,7 +485,7 @@ class Game: # creates class named Game that includes the below indented lines
       
    def draw(self):
       self.screen.fill(BLACK)
-      if LEVEL != None:
+      if LEVEL != None and LEVEL != -1:
          #  In game text
          self.draw_text(self.screen, str(self.player1.score), 24, WHITE, 160, 40)
          self.draw_text(self.screen, str(self.player1.S), 24, WHITE, 100, 40)
@@ -510,13 +536,11 @@ class Game: # creates class named Game that includes the below indented lines
       keys = pg.key.get_pressed()
       for event in pg.event.get():
          if event.type == pg.QUIT or self.player1.playing == False: # checks if you try to quit the game
-            print("this is happening")
+            print("Game Closed")
             self.playing = False
          if event.type == pg.MOUSEBUTTONDOWN:
             # spawns mouse when mousebutton is down
             Mouse(self, -999, -999)
-         global numbertypeperfect
-         global numbertypegreat
          if LEVEL != None:
             if self.player1.health == 0 and self.player1.mode == 1 or self.player1.restart_exists == True:
                pass
@@ -524,42 +548,30 @@ class Game: # creates class named Game that includes the below indented lines
                #  when a key is clicked it will spawn a sprite
                if keys[pg.K_a]:
                   self.player1.image = self.player1_key_img
-                  numbertypeperfect = "1"
-                  PERFECT(self, -999, -999, numbertypeperfect)
-                  numbertypegreat = "1"
-                  GREAT(self, -999, -999, numbertypegreat)
-                  numbertypegreat = "11"
-                  GREAT(self, -999, -999, numbertypegreat)
+                  PERFECT(self, -999, -999, "1")
+                  GREAT(self, -999, -999, "1")
+                  GREAT(self, -999, -999, "11")
                   self.player1.keyfix = True
                   print("Left")
                if keys[pg.K_s]:
                   self.player2.image = self.player1_key_img
-                  numbertypeperfect = "2"
-                  PERFECT(self, -999, -999, numbertypeperfect)
-                  numbertypegreat = "2"
-                  GREAT(self, -999, -999, numbertypegreat)
-                  numbertypegreat = "22"
-                  GREAT(self, -999, -999, numbertypegreat)
+                  PERFECT(self, -999, -999, "2")
+                  GREAT(self, -999, -999, "2")
+                  GREAT(self, -999, -999, "22")
                   self.player2.keyfix = True
                   print("Down")
                if keys[pg.K_k]:
                   self.player3.image = self.player1_key_img
-                  numbertypeperfect = "3"
-                  PERFECT(self, -999, -999, numbertypeperfect)
-                  numbertypegreat = "3"
-                  GREAT(self, -999, -999, numbertypegreat)
-                  numbertypegreat = "33"
-                  GREAT(self, -999, -999, numbertypegreat)
+                  PERFECT(self, -999, -999, "3")
+                  GREAT(self, -999, -999, "3")
+                  GREAT(self, -999, -999, "3")
                   self.player3.keyfix = True
                   print("Up")
                if keys[pg.K_l]:
                   self.player4.image = self.player1_key_img
-                  numbertypeperfect = "4"
-                  PERFECT(self, -999, -999, numbertypeperfect)
-                  numbertypegreat = "4"
-                  GREAT(self, -999, -999, numbertypegreat)
-                  numbertypegreat = "44"
-                  GREAT(self, -999, -999, numbertypegreat)
+                  PERFECT(self, -999, -999, "4")
+                  GREAT(self, -999, -999, "4")
+                  GREAT(self, -999, -999, "4")
                   self.player4.keyfix = True
                   print("Right")
       
