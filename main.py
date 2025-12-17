@@ -54,6 +54,7 @@ class Game: # creates class named Game that includes the below indented lines
          self.map = Map(path.join(self.game_folder, SETTINGS_MENU))
 
       #  Loads saved highscores
+      #  Thank you stack overflow https://stackoverflow.com/questions/16726354/saving-the-highscore-for-a-game
       hs_path = path.join(self.game_folder, 'level1 highscore')
       d = shelve.open(hs_path)
       if 'level1 highscore' not in d:
