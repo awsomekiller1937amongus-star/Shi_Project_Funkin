@@ -185,6 +185,10 @@ class Game: # creates class named Game that includes the below indented lines
       global LOOPFIX4
       global LOOPFIX5
       global LOOPFIX6
+      global CHANGINGKEY1
+      global CHANGINGKEY2
+      global CHANGINGKEY3
+      global CHANGINGKEY4
       self.keyfix_cd1 = Cooldown(500)
       self.keyfix_cd2 = Cooldown(500)
       self.keyfix_cd3 = Cooldown(500)
@@ -268,6 +272,7 @@ class Game: # creates class named Game that includes the below indented lines
          self.player1.level = None
          mixer.music.stop()
          self.playing = False
+         LOOPFIX1 = False
          LEVEL = -1
          g = Game()
          g.new()
@@ -472,7 +477,6 @@ class Game: # creates class named Game that includes the below indented lines
             mixer.music.play(loops= -1)
       elif LEVEL != -1:
          LOOPFIX6 = False
-
       self.all_sprites.update()
    # makes a draw text function to be used later
    def draw_text(self, surface, text, size, color, x, y):
@@ -528,6 +532,14 @@ class Game: # creates class named Game that includes the below indented lines
          if self.player1.level_selected == 5:
             self.draw_text(self.screen, str(self.level5_highscore), 50, WHITE, 690, 500)
             self.draw_text(self.screen, str("1:46"), 40, WHITE, 690, 50)
+
+      if LEVEL == -1:
+         self.draw_text(self.screen, str("Change Keybinds"), 60, WHITE, 725, 200)
+         
+         self.draw_text(self.screen, str("Key 1"), 80, WHITE, 350, 300)
+         self.draw_text(self.screen, str("Key 2"), 80, WHITE, 600, 300)
+         self.draw_text(self.screen, str("Key 3"), 80, WHITE, 850, 300)
+         self.draw_text(self.screen, str("Key 4"), 80, WHITE, 1100, 300)
       
       self.all_sprites.draw(self.screen)
       pg.display.flip()
@@ -575,6 +587,9 @@ class Game: # creates class named Game that includes the below indented lines
                   self.player4.keyfix = True
                   print("Right")
       
+         if LEVEL == -1:
+            if event.type == pg.KEYDOWN and CHANGINGKEY1 == True:
+               pass
 
 
 if __name__ == "__main__":
